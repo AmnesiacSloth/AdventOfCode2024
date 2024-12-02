@@ -1,5 +1,5 @@
 /**
- * @file Day1.cpp
+ * @file part1.cpp
  * @author Christian Velasquez
  * @brief Advent of Code Solution program for Day 1
  * @version 0.1
