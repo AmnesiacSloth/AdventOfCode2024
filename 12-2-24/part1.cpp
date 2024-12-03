@@ -17,7 +17,7 @@
 
 // Containers
 #include <queue>
-
+#include <unordered_set> // may be useless 
 // Datatypes
 #include <string>
 
@@ -44,17 +44,58 @@ string reportToString(vector<int>& report) {
   return boi;
 }
 
-int checkReport(vector<int>& report) {
+int checkReport(vector<int>& report, unordered_set<int>& positiveIncrements, unordered_set<int>& negativeIncrements){
   // size_t numLevels = report.;
   vector<int>::iterator a;
   vector<int>::iterator b;
 
   // two pointer approach?
-  for (auto itr = report.begin(); itr != report.end() - 1; itr++) {
-    int difference = *(itr + 1) - *(itr);
-    cout << difference << "  ";
+  auto itr = report.begin();
+  int difference = *(itr + 1) - *(itr);
+  int isIncreasing = (difference > 0) ? true : false;
+  int errors = 0; // tracks # of bad level differences
+  // early exit for 0 difference 
+  if ((!positiveIncrements.count(difference) && isIncreasing ) || (!negativeIncrements.count(difference) && !isIncreasing)) {errors++; }// difference out of range ex 0, -4, 6, 4,-8 
+  itr++;
+  // checks for valid adjacent levelDifferences based on whether the report intially starts as increasing or decreasing
+  while (itr != report.end() - 1) {
+    switch (isIncreasing) {
+      case 1:
+      difference = *(itr + 1) - *(itr); 
+      if (positiveIncrements.count(difference) == 0){
+        if (errors < 1) {
+          errors++;
+        }
+        else {
+          return 0;
+        }
+      }
+      else {
+        
+        itr++;
+      }
+      break;
+      case 0:
+      difference = *(itr + 1) - *(itr); 
+      if (negativeIncrements.count(difference) == 0){
+        if (errors < 1) {
+          errors++;
+        }
+        else {
+          return 0;
+        }
+      }
+      else {
+        itr++;
+        continue;
+      }
+      break;
+      default:
+      return 0;
+      break;
+    }
   }
-  cout << endl;
+  return 1;
 }
 /**
  * @brief Day 2 Red-Nosed Reports
@@ -66,13 +107,15 @@ int main() {
   string line;
   uint16_t safeReports = 0;
   string delimiter = " ";
+
+  unordered_set<int> positiveIncrements = {1,2,3};
+  unordered_set<int> negativeIncrements = {-1,-2,-3};
   while (getline(reportsStream, line)) {
     vector<int> reportLine;
     splitReport(reportLine, line, delimiter);
-    cout << reportToString(reportLine) << endl;
-    safeReports += checkReport(reportLine);
+    //cout << reportToString(reportLine) << endl;
+    safeReports += checkReport(reportLine,positiveIncrements,negativeIncrements);
   }
-
   cout << safeReports << endl;
   return safeReports;
 }
