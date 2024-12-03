@@ -55,7 +55,7 @@ int checkReport(vector<int>& report, unordered_set<int>& positiveIncrements, uno
   int isIncreasing = (difference > 0) ? true : false;
   int errors = 0; // tracks # of bad level differences
   // early exit for 0 difference 
-  if ((!positiveIncrements.count(difference) && isIncreasing ) || (!negativeIncrements.count(difference) && !isIncreasing)) {errors++; }// difference out of range ex 0, -4, 6, 4,-8 
+  if ((!positiveIncrements.count(difference) && isIncreasing ) || (!negativeIncrements.count(difference) && !isIncreasing)) {return 0; }// difference out of range ex 0, -4, 6, 4,-8 
   itr++;
   // checks for valid adjacent levelDifferences based on whether the report intially starts as increasing or decreasing
   while (itr != report.end() - 1) {
@@ -63,12 +63,7 @@ int checkReport(vector<int>& report, unordered_set<int>& positiveIncrements, uno
       case 1:
       difference = *(itr + 1) - *(itr); 
       if (positiveIncrements.count(difference) == 0){
-        if (errors < 1) {
-          errors++;
-        }
-        else {
-          return 0;
-        }
+        return 0;
       }
       else {
         
@@ -78,12 +73,7 @@ int checkReport(vector<int>& report, unordered_set<int>& positiveIncrements, uno
       case 0:
       difference = *(itr + 1) - *(itr); 
       if (negativeIncrements.count(difference) == 0){
-        if (errors < 1) {
-          errors++;
-        }
-        else {
-          return 0;
-        }
+        return 0;
       }
       else {
         itr++;
