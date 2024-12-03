@@ -1,7 +1,7 @@
 /**
- * @file part1.cpp
+ * @file part2.cpp
  * @author Christian Velasquez
- * @brief Advent of Code Solution program for Day 2 Part 1
+ * @brief Advent of Code Solution program for Day 2 Part 2
  * @version 0.1
  * @date 2024-12-02
  *
